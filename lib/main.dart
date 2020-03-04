@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterarchitecturesample/top_page_1.dart';
+import 'package:flutterarchitecturesample/top_page_2.dart';
 
 import 'top_page_0.dart';
 
@@ -41,7 +43,29 @@ class MyHomePage extends StatelessWidget {
                   )
               );
             },
-          )
+          ),
+          ListTile(
+            title: const Text('InheritedWidgetの場合'),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TopPage1(),
+                    fullscreenDialog: true,
+                  )
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('StreamBuilderの場合'),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TopPage2(),
+                    fullscreenDialog: true,
+                  )
+              );
+            },
+          ),
         ],
       ),
     );

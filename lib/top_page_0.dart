@@ -6,10 +6,10 @@ class TopPage0 extends StatefulWidget {
   final repository = CountRepository();
 
   @override
-  State<StatefulWidget> createState() => _TopPageState();
+  State<StatefulWidget> createState() => _TopPage0State();
 }
 
-class _TopPageState extends State<TopPage0> {
+class _TopPage0State extends State<TopPage0> {
   int _counter = 0;
   bool _isLoading = false;
 
