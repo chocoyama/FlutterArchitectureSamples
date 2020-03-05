@@ -3,23 +3,35 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutterarchitecturesample/count_repository.dart';
 
-class CounterLogic {
+class CounterBloc {
+  final CountRepository _repository;
   final _valueController = StreamController<int>();
+  final _loadingController = StreamController<bool>();
+
   Stream<int> get value => _valueController.stream;
+  Stream<bool> get isLoading => _loadingController.stream;
 
   int _counter = 0;
 
-  CounterLogic() {
+  CounterBloc(this._repository) {
     _valueController.sink.add(_counter);
+    _loadingController.sink.add(false);
   }
 
   void incrementCounter() async {
-    _valueController.sink.add(++_counter);
+    _loadingController.sink.add(true);
+    var increaseCount = await _repository.fetch().whenComplete(() {
+      _loadingController.sink.add(false);
+    });
+    _counter += increaseCount;
+    _valueController.sink.add(_counter);
   }
 
   void dispose() {
     _valueController.close();
+    _loadingController.close();
   }
 }
 
@@ -29,49 +41,54 @@ class TopPage2 extends StatefulWidget {
 }
 
 class _TopPageState extends State<TopPage2> {
-  CounterLogic counterLogic;
+  CounterBloc counterBloc;
 
   @override
   void initState() {
     super.initState();
-    counterLogic = CounterLogic();
+    counterBloc = CounterBloc(CountRepository());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Block Simple Demo')
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _WidgetA(counterLogic),
-          _WidgetB(),
-          _WidgetC(counterLogic),
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          appBar: AppBar(
+              title: const Text('Block Simple Demo')
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              _WidgetA(counterBloc),
+              _WidgetB(),
+              _WidgetC(counterBloc),
+            ],
+          ),
+        ),
+        _LoadingWidget(counterBloc.isLoading),
+      ],
     );
   }
 
   @override
   void dispose() {
-    counterLogic.dispose();
+    counterBloc.dispose();
     super.dispose();
   }
 }
 
 class _WidgetA extends StatelessWidget {
-  final CounterLogic counterLogic;
+  final CounterBloc counterBloc;
 
-  const _WidgetA(this.counterLogic);
+  const _WidgetA(this.counterBloc);
 
   @override
   Widget build(BuildContext context) {
     print('called_WidgetA#build()');
     return Center(
       child: StreamBuilder(
-        stream: counterLogic.value,
+        stream: counterBloc.value,
         builder: (context, snapshot) {
           return Text(
             '${snapshot.data}',
@@ -92,9 +109,9 @@ class _WidgetB extends StatelessWidget {
 }
 
 class _WidgetC extends StatelessWidget {
-  final CounterLogic counterLogic;
+  final CounterBloc counterBloc;
   
-  _WidgetC(this.counterLogic);
+  _WidgetC(this.counterBloc);
   
   @override
   Widget build(BuildContext context) {
@@ -102,7 +119,35 @@ class _WidgetC extends StatelessWidget {
     return RaisedButton(
       child: Icon(Icons.add),
       onPressed: () {
-        counterLogic.incrementCounter();
+        counterBloc.incrementCounter();
+      },
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  final Stream<bool> stream;
+
+  const _LoadingWidget(this.stream);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<bool>(
+      initialData: false,
+      stream: stream,
+      builder: (context, snapshot) {
+        if (snapshot.data) {
+          return const DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0x44000000),
+            ),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       },
     );
   }
