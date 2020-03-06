@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutterarchitecturesample/count_repository.dart';
 import 'package:flutterarchitecturesample/top_page_1.dart';
 import 'package:flutterarchitecturesample/top_page_2.dart';
 import 'package:flutterarchitecturesample/top_page_8.dart';
+import 'package:flutterarchitecturesample/top_page_9.dart';
 
 import 'top_page_0.dart';
 import 'top_page_3.dart';
@@ -133,6 +135,17 @@ class MyHomePage extends StatelessWidget {
               Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => TopPage8(),
+                    fullscreenDialog: true,
+                  )
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Reduxの場合'),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TopPage9(CountRepository()),
                     fullscreenDialog: true,
                   )
               );
