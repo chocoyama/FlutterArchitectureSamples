@@ -83,7 +83,7 @@ class MyHomePage extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('BLoC+Providerの場合'),
+            title: const Text('BLoC+Providerの場合（個人的おすすめ1）'),
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(
@@ -105,7 +105,7 @@ class MyHomePage extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('ScopedModelの場合'),
+            title: const Text('ScopedModelの場合（個人的おすすめ2）'),
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(
@@ -117,6 +117,17 @@ class MyHomePage extends StatelessWidget {
           ),
           ListTile(
             title: const Text('ValueNotifierの場合'),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TopPage7(),
+                    fullscreenDialog: true,
+                  )
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('ValueNotifier+Providerの場合'),
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(
