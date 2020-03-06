@@ -50,7 +50,11 @@ class _WidgetA extends StatelessWidget {
   Widget build(BuildContext context) {
     print('called _WidgetA#build()');
     return Center(
+      // StoreBuilderを使うとStore全体がListenされる
+      // 変更があると必ずbuild関数が呼ばれて再構築される
       child: StoreConnector<AppState, int>(
+        // StoreConnectorを使うと、StoreをWidget固有のViewModelん変換する
+        // そのためツリーのどの部分を更新する必要があるかについて制御することができるようになる
         converter: (store) => store.state.counter,
         builder: (context, counter) {
           return Text(
