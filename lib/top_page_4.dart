@@ -42,9 +42,9 @@ class _WidgetA extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('called _WidgetA#build()');
-    // StreamBuilderを利用しているため、BLoCクラス自体をlistenする必要がない
+    // StreamBuilderを利用しているため、BLoCクラス自体をlistenする必要がないためfalse
     var bloc = Provider.of<CounterBloc>(context, listen: false);
-    
+
     return Center(
       child: StreamBuilder<int>(
         stream: bloc.value,
