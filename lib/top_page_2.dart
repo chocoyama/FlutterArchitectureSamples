@@ -5,35 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutterarchitecturesample/count_repository.dart';
 
-class CounterBloc {
-  final CountRepository _repository;
-  final _valueController = StreamController<int>();
-  final _loadingController = StreamController<bool>();
-
-  Stream<int> get value => _valueController.stream;
-  Stream<bool> get isLoading => _loadingController.stream;
-
-  int _counter = 0;
-
-  CounterBloc(this._repository) {
-    _valueController.sink.add(_counter);
-    _loadingController.sink.add(false);
-  }
-
-  void incrementCounter() async {
-    _loadingController.sink.add(true);
-    var increaseCount = await _repository.fetch().whenComplete(() {
-      _loadingController.sink.add(false);
-    });
-    _counter += increaseCount;
-    _valueController.sink.add(_counter);
-  }
-
-  void dispose() {
-    _valueController.close();
-    _loadingController.close();
-  }
-}
+import 'counter_bloc.dart';
+import 'loading_widget_1.dart';
 
 class TopPage2 extends StatefulWidget {
   @override
@@ -66,7 +39,7 @@ class _TopPageState extends State<TopPage2> {
             ],
           ),
         ),
-        _LoadingWidget(counterBloc.isLoading),
+        LoadingWidget1(counterBloc.isLoading),
       ],
     );
   }
@@ -120,34 +93,6 @@ class _WidgetC extends StatelessWidget {
       child: Icon(Icons.add),
       onPressed: () {
         counterBloc.incrementCounter();
-      },
-    );
-  }
-}
-
-class _LoadingWidget extends StatelessWidget {
-  final Stream<bool> stream;
-
-  const _LoadingWidget(this.stream);
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      initialData: false,
-      stream: stream,
-      builder: (context, snapshot) {
-        if (snapshot.data) {
-          return const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else {
-          return const SizedBox.shrink();
-        }
       },
     );
   }

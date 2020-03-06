@@ -3,6 +3,8 @@ import 'package:flutterarchitecturesample/top_page_1.dart';
 import 'package:flutterarchitecturesample/top_page_2.dart';
 
 import 'top_page_0.dart';
+import 'top_page_3.dart';
+import 'top_page_4.dart';
 
 void main() => runApp(MyApp());
 
@@ -56,11 +58,33 @@ class MyHomePage extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('StreamBuilderの場合'),
+            title: const Text('BLoCの場合'),
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => TopPage2(),
+                    fullscreenDialog: true,
+                  )
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('BLoC+InheritedWidgetの場合'),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TopPage3(),
+                    fullscreenDialog: true,
+                  )
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('BLoC+Providerの場合'),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TopPage4(),
                     fullscreenDialog: true,
                   )
               );
