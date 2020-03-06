@@ -34,7 +34,8 @@ class TopPage8 extends StatelessWidget {
                 _WidgetC(),
               ],
             ),
-          )
+          ),
+          _LoadingWidget()
         ],
       ),
     );
@@ -79,6 +80,31 @@ class _WidgetC extends StatelessWidget {
       child: Icon(Icons.add),
       onPressed: () {
         Provider.of<_CounterValue>(context, listen: false).incrementCounter();
+      },
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final loadingValue = Provider.of<_LoadingValue>(context, listen: false);
+
+    return ValueListenableBuilder<bool>(
+      valueListenable: loadingValue,
+      builder: (context, isLoading, child) {
+        if (isLoading) {
+          return const DecoratedBox(
+              decoration: BoxDecoration(
+                color: Color(0x44000000),
+              ),
+              child: Center(
+                child: CircularProgressIndicator(),
+              )
+          );
+        } else {
+          return SizedBox.shrink();
+        }
       },
     );
   }

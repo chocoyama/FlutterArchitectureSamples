@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterarchitecturesample/top_page_1.dart';
 import 'package:flutterarchitecturesample/top_page_2.dart';
+import 'package:flutterarchitecturesample/top_page_8.dart';
 
 import 'top_page_0.dart';
 import 'top_page_3.dart';
@@ -131,7 +132,7 @@ class MyHomePage extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => TopPage7(),
+                    builder: (context) => TopPage8(),
                     fullscreenDialog: true,
                   )
               );
